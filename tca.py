@@ -9,11 +9,11 @@ from scapy.all import *
 
 def tcp_connection_check(directory_authorities):
     for directory in directory_authorities:
-        host = directory.split(":",1)
-        ans, unans = sr(IP(dst=host[0])/TCP(dport=int(host[1]),flags="S"), verbose=0)
+        host_addr, host_port = directory.split(":")
+        host_port = int(host_port)
+        ans, unans = sr(IP(dst=host_addr)/TCP(dport=int(host_port),flags="S"), verbose=0)
         ans.summary(lfilter = lambda (s,r): r.sprintf("%TCP.flags%") == "SA",
         prn=lambda(s,r):r.sprintf("TCP connection successful to %IP.src%:%TCP.sport% "))
-
 
 # Download consensus from directory authorities
 
